@@ -83,6 +83,7 @@ public class MainActivity extends FlutterActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MyReactActivity.class);
+                intent.putExtra("message_from_native", txtMessage.getText().toString());
                 startActivity(intent);
             }
         });
