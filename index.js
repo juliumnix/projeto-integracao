@@ -1,11 +1,10 @@
 import React from 'react';
 import {Alert, AppRegistry, Button, StyleSheet, Text, View} from 'react-native';
 
-const HelloWorld = () => {
+const HelloWorld = (props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.hello}>Hello, CVU DE APITO</Text>
-      <Button onPress={() => {console.log("teste")}} title='Teste'/>
+      <Text style={styles.hello}>Hello, ${props.message_from_native}</Text>
     </View>
   );
 };
