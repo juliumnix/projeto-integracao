@@ -20,7 +20,7 @@ import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
-public class MainActivity extends FlutterActivity {
+public class MainActivity extends AppCompatActivity {
     public FlutterEngine flutterEngine;
     private static final String CHANNEL = "samples.flutter.dev/battery";
     private int getBatteryLevel() {

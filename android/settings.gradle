@@ -8,8 +8,10 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        def targetDir = file("${rootDir}/../flutter_module/build/host/outputs/repo")
+
         maven {
-            url "C:\\workspace\\projetoReactTestev2\\flutter_module\\build\\host\\outputs\\repo"
+            url "$targetDir"
         }
         maven {
             url "https://storage.googleapis.com/download.flutter.io"
