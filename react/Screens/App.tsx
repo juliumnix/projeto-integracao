@@ -1,17 +1,15 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View} from 'react-native';
-import { HomeText } from './styles';
-import { useNavigation } from '@react-navigation/native';
-import 'react-native-gesture-handler';
+import { NativeProps } from '../..';
 
-export const App = ({ route }: any)  => {
-    const { message_from_native } = route.params;
-    const navigation = useNavigation();
+export const App = (props : NativeProps)  => {
     return (
       <View style={styles.container}>
-        <Text style={styles.hello}>BOM DIA, {message_from_native}</Text>
-        <HomeText>Hello, {message_from_native}</HomeText>
-        <Button title='SAFADO' onPress={() => {navigation.navigate("HomeScreen")}}/>
+        <Text style={styles.hello}>Welcome to React Native</Text>
+        <Text style={styles.hello}>
+          This is the message coming from the native
+        </Text>
+        <Text style={styles.nativeText}>{props.message_from_native}</Text>
       </View>
     );
   };
@@ -26,4 +24,9 @@ export const App = ({ route }: any)  => {
       textAlign: 'center',
       margin: 10,
     },
+    nativeText: {
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight: 'bold'
+    }
   });
