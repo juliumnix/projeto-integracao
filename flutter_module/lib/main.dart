@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'mymodule.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -17,22 +15,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Teste Bonito'),
+      debugShowCheckedModeBanner: false,
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  String _batteryLevel = 'Unknown battery level.';
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  String _message = '';
   static const platform = MethodChannel('samples.flutter.dev/battery');
 
   Future<void> _getMessage() async {
@@ -45,22 +42,47 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     setState(() {
-      _batteryLevel = batteryLevel;
+      _message = batteryLevel;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Função a ser executada quando a tela é focada
+      print('Tela focada! Executando função...');
+      _getMessage();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
+    return Scaffold(
+      body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: _getMessage,
-              child: const Text('Get Message from native'),
-            ),
-            Text(_batteryLevel),
+            const Text("Welcome to Flutter", style: TextStyle(fontSize: 20)),
+            Container(height: 10),
+            const Text("This is the message coming from the native",
+                style: TextStyle(fontSize: 16)),
+            Container(height: 10),
+            Text(_message,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
