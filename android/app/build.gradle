@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.facebook.react'
 }
 
 def enableProguardInReleaseBuilds = false
@@ -40,6 +41,10 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
+        profile {
+            initWith debug
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,6 +53,11 @@ android {
 }
 
 dependencies {
+    //Flutter Dependencies
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
+    debugImplementation 'com.example.flutter_module:flutter_debug:1.0'
+    profileImplementation 'com.example.flutter_module:flutter_profile:1.0'
+    releaseImplementation 'com.example.flutter_module:flutter_release:1.0'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -57,9 +67,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    // The version of react-native is set by the React Native Gradle Plugin
-    implementation('com.facebook.react:react-android:0.72.4')
 
+    //React Dependencies
+    implementation('com.facebook.react:react-android:0.72.4')
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
