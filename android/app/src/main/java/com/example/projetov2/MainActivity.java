@@ -3,6 +3,7 @@ package com.example.projetov2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,6 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.projetov2.model.Informations;
+import com.example.projetov2.presenter.MainPresenter;
+import com.example.projetov2.presenter.contract.MainContract;
+
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.embedding.engine.FlutterEngineCache;
@@ -20,9 +25,13 @@ import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
     public FlutterEngine flutterEngine;
+    private MainContract.Presenter presenter;
     private static final String CHANNEL = "samples.flutter.dev/battery";
+
+    private Context context;
+    private MainContract.Model model;
 
 
     @Override
@@ -33,7 +42,36 @@ public class MainActivity extends AppCompatActivity {
         Button btnFlutter = findViewById(R.id.btn_flutter);
         EditText txtMessage = findViewById(R.id.txt_texto);
 
+        model = Informations.getInstance();
 
+        presenter = new MainPresenter(this,model);
+
+        context = getBaseContext();
+
+        initializerFlutterEngine();
+
+        btnFlutter.setOnClickListener(view -> presenter.onFlutterButtonClick(txtMessage.getText().toString()));
+        btnReact.setOnClickListener(view -> presenter.onReactButtonClick(txtMessage.getText().toString()));
+    }
+
+    @Override
+    public void showFlutterActivity() {
+        startActivity(
+                FlutterActivity
+                        .withCachedEngine("my_engine_id")
+                        .build(context)
+        );
+    }
+
+    @Override
+    public void showReactActivity(String message) {
+        Intent intent = new Intent(MainActivity.this, MyReactActivity.class);
+        intent.putExtra("message_from_native", message);
+        startActivity(intent);
+    }
+
+    @Override
+    public void initializerFlutterEngine() {
         flutterEngine = new FlutterEngine(this);
         flutterEngine.getDartExecutor().executeDartEntrypoint(
                 DartExecutor.DartEntrypoint.createDefault()
@@ -50,29 +88,16 @@ public class MainActivity extends AppCompatActivity {
             new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                     .setMethodCallHandler((MethodCall call, MethodChannel.Result result) -> {
                         if ("getMessage".equals(call.method)) {
-                            result.success(txtMessage.getText().toString()); // Send whatever you need here.
+                            result.success(model.getMessageFromNative()); // Send whatever you need here.
                         } else {
                             result.notImplemented();
                         }
                     });
         }
-        btnFlutter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(
-                        FlutterActivity
-                                .withCachedEngine("my_engine_id")
-                                .build(view.getContext())
-                );
-            }
-        });
-        btnReact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyReactActivity.class);
-                intent.putExtra("message_from_native", txtMessage.getText().toString());
-                startActivity(intent);
-            }
-        });
+    }
+
+    @Override
+    public void initializerReactEngine() {
+
     }
 }

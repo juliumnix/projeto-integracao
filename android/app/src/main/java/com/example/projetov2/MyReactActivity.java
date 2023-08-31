@@ -7,6 +7,9 @@ import android.view.KeyEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projetov2.model.Informations;
+import com.example.projetov2.presenter.MainPresenter;
+import com.example.projetov2.presenter.contract.MainContract;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactInstanceManager;
@@ -19,38 +22,22 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.List;
 
-public class MyReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
+public class MyReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler, MainContract.View {
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
+
+    private MainContract.Presenter presenter;
+    private MainContract.Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(null);
-        SoLoader.init(this, false);
+        model = Informations.getInstance();
 
-        mReactRootView = new ReactRootView(this);
-        List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
-        // Packages that cannot be autolinked yet can be added manually here, for example:
-        // packages.add(new MyReactNativePackage());
-        // Remember to include them in `settings.gradle` and `app/build.gradle` too.
-        SoLoader.init(this, false);
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setCurrentActivity(this)
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("index")
-                .addPackages(packages)
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .setJavaScriptExecutorFactory(new HermesExecutorFactory())
-                .build();
-        // The string here (e.g. "MyReactNativeApp") has to match
-        // the string in AppRegistry.registerComponent() in index.js
-        Bundle initialProperties = new Bundle();
-        String messageFromNative = getIntent().getStringExtra("message_from_native");
-        initialProperties.putString("message_from_native", messageFromNative);
-        mReactRootView.startReactApplication(mReactInstanceManager, "MyReactNativeApp", initialProperties);
-        setContentView(mReactRootView);
+        presenter = new MainPresenter(this, model);
+
+        initializerReactEngine();
+
     }
 
     @Override
@@ -102,5 +89,49 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
             return true;
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void showFlutterActivity() {
+
+    }
+
+    @Override
+    public void showReactActivity(String message) {
+
+    }
+
+    @Override
+    public void initializerFlutterEngine() {
+
+    }
+
+    @Override
+    public void initializerReactEngine() {
+        SoLoader.init(this, false);
+
+        mReactRootView = new ReactRootView(this);
+        List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
+        // Packages that cannot be autolinked yet can be added manually here, for example:
+        // packages.add(new MyReactNativePackage());
+        // Remember to include them in `settings.gradle` and `app/build.gradle` too.
+        SoLoader.init(this, false);
+        mReactInstanceManager = ReactInstanceManager.builder()
+                .setApplication(getApplication())
+                .setCurrentActivity(this)
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModulePath("index")
+                .addPackages(packages)
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .setJavaScriptExecutorFactory(new HermesExecutorFactory())
+                .build();
+        // The string here (e.g. "MyReactNativeApp") has to match
+        // the string in AppRegistry.registerComponent() in index.js
+        Bundle initialProperties = new Bundle();
+        String messageFromNative = getIntent().getStringExtra("message_from_native");
+        initialProperties.putString("message_from_native", messageFromNative);
+        mReactRootView.startReactApplication(mReactInstanceManager, "MyReactNativeApp", initialProperties);
+        setContentView(mReactRootView);
     }
 }
