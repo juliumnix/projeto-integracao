@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_module/mymodule.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,12 +31,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   String _message = '';
+  var module = MyModule();
   static const platform = MethodChannel('samples.flutter.dev/battery');
 
   Future<void> _getMessage() async {
     String batteryLevel;
     try {
-      final String result = await platform.invokeMethod('getMessage');
+      // final String result = await platform.invokeMethod('getMessage');
+      String result = await module.getMessageFromNative();
       batteryLevel = result;
     } on PlatformException catch (e) {
       batteryLevel = "Failed to get message from native: '${e.message}'.";
@@ -61,8 +64,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Função a ser executada quando a tela é focada
-      print('Tela focada! Executando função...');
       _getMessage();
     }
   }

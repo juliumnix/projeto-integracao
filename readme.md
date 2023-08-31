@@ -4,3 +4,4 @@ Flutter
 
 flutter pub get
 flutter build aar
+flutter attach
