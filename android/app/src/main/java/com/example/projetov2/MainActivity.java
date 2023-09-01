@@ -59,9 +59,15 @@ public class MainActivity extends AppCompatActivity {
         btnFlutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                startActivity(
+//                        FlutterActivity
+//                                .withCachedEngine("my_engine_id")
+//                                .build(view.getContext())
+//                );
                 startActivity(
                         FlutterActivity
-                                .withCachedEngine("my_engine_id")
+                                .withNewEngine()
+                                .initialRoute("/my_route")
                                 .build(view.getContext())
                 );
             }

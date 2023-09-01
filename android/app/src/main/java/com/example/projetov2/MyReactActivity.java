@@ -19,6 +19,8 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.List;
 
+import io.flutter.embedding.android.FlutterActivity;
+
 public class MyReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
@@ -32,6 +34,7 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
         List<ReactPackage> packages = new PackageList(getApplication()).getPackages();
         // Packages that cannot be autolinked yet can be added manually here, for example:
         // packages.add(new MyReactNativePackage());
+        packages.add(new MyAppPackage());
         // Remember to include them in `settings.gradle` and `app/build.gradle` too.
         SoLoader.init(this, false);
         mReactInstanceManager = ReactInstanceManager.builder()
@@ -56,6 +59,19 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
     @Override
     public void invokeDefaultOnBackPressed() {
         super.onBackPressed();
+    }
+
+    public void testeNavegation() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(
+                        FlutterActivity
+                                .withCachedEngine("my_engine_id")
+                                .build(getBaseContext())
+                );
+            }
+        });
     }
 
     @Override
@@ -87,6 +103,7 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
             mReactRootView.unmountReactApplication();
         }
     }
+
     @Override
     public void onBackPressed() {
         if (mReactInstanceManager != null) {
