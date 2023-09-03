@@ -4,13 +4,17 @@ import static com.example.projetov2.model.Informations.getChannelFlutter;
 import static com.example.projetov2.model.Informations.getChannel_Id;
 
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.projetov2.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
+
+import java.util.Map;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -21,7 +25,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 public class FlutterIntegrationViewModel extends ViewModel implements NavigateAdapter {
     private final Informations model;
-
+    private AppCompatActivity mainActivity;
     public FlutterIntegrationViewModel() {
         this.model = Informations.getInstance();
     }
@@ -32,6 +36,7 @@ public class FlutterIntegrationViewModel extends ViewModel implements NavigateAd
 
     @Override
     public void navigateTo(AppCompatActivity activity) {
+        model.setRoute("/");
         Intent intent = FlutterActivity
                 .withCachedEngine(getChannel_Id())
                 .build(activity.getApplicationContext());
@@ -40,6 +45,7 @@ public class FlutterIntegrationViewModel extends ViewModel implements NavigateAd
 
     @Override
     public void initFramework(AppCompatActivity appCompatActivity) {
+        mainActivity = appCompatActivity;
         FlutterEngine flutterEngine = new FlutterEngine(appCompatActivity);
         flutterEngine.getDartExecutor().executeDartEntrypoint(
                 DartExecutor.DartEntrypoint.createDefault()
@@ -53,11 +59,38 @@ public class FlutterIntegrationViewModel extends ViewModel implements NavigateAd
         }
     }
 
+    private void navigateToReact(String code){
+        Intent intent = new Intent(mainActivity, MyReactActivity.class);
+        intent.putExtra("message_from_native", "pixCode/"+code);
+        mainActivity.startActivity(intent);
+    }
+
     private void initializeListenerFromFlutterToNative(FlutterEngine engine) {
         new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), getChannelFlutter())
                 .setMethodCallHandler((MethodCall call, MethodChannel.Result result) -> {
                     if ("getMessage".equals(call.method)) {
                         result.success(model.getMessage_From_Native());
+                    } else {
+                        result.notImplemented();
+                    }
+                });
+
+        new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), "navigate/flutter")
+                .setMethodCallHandler((MethodCall call, MethodChannel.Result result) -> {
+                    if ("getNavigationRoute".equals(call.method)) {
+                        result.success(model.getRoute());
+                    } else {
+                        result.notImplemented();
+                    }
+                });
+
+        new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), "navigate/react")
+                .setMethodCallHandler((MethodCall call, MethodChannel.Result result) -> {
+                    if ("getNavigateToReact".equals(call.method)) {
+                        Map<String, Object> data = call.arguments();
+                        assert data != null;
+                        String key = (String) data.get("key");
+                        navigateToReact(key);
                     } else {
                         result.notImplemented();
                     }

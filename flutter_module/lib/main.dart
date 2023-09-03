@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_module/mymodule.dart';
+import 'package:flutter_module/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,76 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  String _message = '';
-  var module = MyModule();
-  static const platform = MethodChannel('samples.flutter.dev/battery');
-
-  Future<void> _getMessage() async {
-    String batteryLevel;
-    try {
-      // final String result = await platform.invokeMethod('getMessage');
-      String result = await module.getMessageFromNative();
-      batteryLevel = result;
-    } on PlatformException catch (e) {
-      batteryLevel = "Failed to get message from native: '${e.message}'.";
-    }
-
-    setState(() {
-      _message = batteryLevel;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _getMessage();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text("Welcome to Flutter", style: TextStyle(fontSize: 20)),
-            Container(height: 10),
-            const Text("This is the message coming from the native",
-                style: TextStyle(fontSize: 16)),
-            Container(height: 10),
-            Text(_message,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
+      home: SplashScreen(),
     );
   }
 }

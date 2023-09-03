@@ -5,6 +5,8 @@ public class Informations {
     private static final String Channel_Id = "my_engine_id";
     private String Message_From_Native = "";
 
+    private String route = "/";
+
     private static Informations instance;
 
     private Informations() {
@@ -32,5 +34,13 @@ public class Informations {
 
     public void setMessage_From_Native(String message_From_Native) {
         Message_From_Native = message_From_Native;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }

@@ -1,5 +1,10 @@
 package com.example.projetov2.viewmodel;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import static com.example.projetov2.model.Informations.getChannel_Id;
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import com.example.projetov2.BuildConfig;
 import com.example.projetov2.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
+import com.example.projetov2.packages.ReactPackageNative;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactInstanceManager;
@@ -20,6 +26,8 @@ import com.facebook.react.common.LifecycleState;
 import com.facebook.soloader.SoLoader;
 
 import java.util.List;
+
+import io.flutter.embedding.android.FlutterActivity;
 
 public class ReactIntegrationViewModel extends ViewModel implements NavigateAdapter {
     private final Informations model;
@@ -40,6 +48,19 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         activity.startActivity(intent);
     }
 
+    public void renderFlutterInsideReact(String route, AppCompatActivity activity) {
+        model.setRoute(route);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = FlutterActivity
+                        .withCachedEngine(getChannel_Id())
+                        .build(activity.getApplicationContext());
+                activity.startActivity(intent);
+            }
+        });
+    }
+
     @Override
     public void initFramework(AppCompatActivity appCompatActivity) {
         SoLoader.init(appCompatActivity, false);
@@ -47,6 +68,7 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         List<ReactPackage> packages = new PackageList(appCompatActivity.getApplication()).getPackages();
         // Packages that cannot be autolinked yet can be added manually here, for example:
         // packages.add(new MyReactNativePackage());
+        packages.add(new ReactPackageNative());
         // Remember to include them in `settings.gradle` and `app/build.gradle` too.
         SoLoader.init(appCompatActivity, false);
         ReactInstanceManager mReactInstanceManager = ReactInstanceManager.builder()
