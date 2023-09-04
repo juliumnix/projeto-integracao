@@ -5,7 +5,7 @@ public class Informations {
     private static final String Channel_Id = "my_engine_id";
     private String Message_From_Native = "";
 
-    private String route = "/";
+    private String route = "";
 
     private static Informations instance;
 

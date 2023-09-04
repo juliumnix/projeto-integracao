@@ -12,7 +12,6 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
 public class MyReactActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
     private ReactIntegrationViewModel viewModel;
-    private ReactInstanceManager mReactInstanceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +30,16 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
     protected void onPause() {
         super.onPause();
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostPause(this);
+        if (viewModel.getmReactInstanceManager() != null) {
+            viewModel.getmReactInstanceManager().onHostPause(this);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostResume(this, this);
+        if (viewModel.getmReactInstanceManager() != null) {
+            viewModel.getmReactInstanceManager().onHostResume(this, this);
         }
     }
 
@@ -49,8 +47,8 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
     protected void onDestroy() {
         super.onDestroy();
 
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onHostDestroy(this);
+        if (viewModel.getmReactInstanceManager() != null) {
+            viewModel.getmReactInstanceManager().onHostDestroy(this);
         }
         if (viewModel.getmReactRootView() != null) {
             viewModel.getmReactRootView().unmountReactApplication();
@@ -59,16 +57,16 @@ public class MyReactActivity extends AppCompatActivity implements DefaultHardwar
 
     @Override
     public void onBackPressed() {
-        if (mReactInstanceManager != null) {
-            mReactInstanceManager.onBackPressed();
+        if (viewModel.getmReactInstanceManager() != null) {
+            viewModel.getmReactInstanceManager().onBackPressed();
         } else {
             super.onBackPressed();
         }
     }
 
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && mReactInstanceManager != null) {
-            mReactInstanceManager.showDevOptionsDialog();
+        if (keyCode == KeyEvent.KEYCODE_MENU && viewModel.getmReactInstanceManager() != null) {
+            viewModel.getmReactInstanceManager().showDevOptionsDialog();
             return true;
         }
         return super.onKeyUp(keyCode, event);

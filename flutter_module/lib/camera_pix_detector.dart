@@ -13,7 +13,7 @@ class CameraPixDetector extends StatefulWidget {
 
 class _CameraPixDetectorState extends State<CameraPixDetector>
     with WidgetsBindingObserver {
-  final FocusNode _focusNode = FocusNode();
+  TextEditingController _textController = TextEditingController();
 
   readQRCode() async {
     String code = await FlutterBarcodeScanner.scanBarcode(
@@ -27,6 +27,7 @@ class _CameraPixDetectorState extends State<CameraPixDetector>
 
   navigateToPix(String pixCode) {
     MyModule module = MyModule();
+    _textController.clear();
     module.navigateToReact(pixCode);
   }
 
@@ -45,14 +46,28 @@ class _CameraPixDetectorState extends State<CameraPixDetector>
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Text("Como gostaria de pagar seu PIX?"),
               ElevatedButton.icon(
                 onPressed: readQRCode,
                 icon: const Icon(Icons.qr_code),
-                label: const Text('Validar'),
+                label: const Text('Ler QR Code'),
               ),
+              const Text("Copiar e colar código PIX"),
+              TextField(
+                controller: _textController,
+                decoration: const InputDecoration(
+                  hintText: 'Digite seu código PIX aqui',
+                  labelText: 'Código PIX',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    navigateToPix(_textController.text);
+                  },
+                  icon: Icon(Icons.arrow_forward),
+                  label: Text("Pagar"))
             ],
           ),
         ),

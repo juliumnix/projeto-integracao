@@ -5,6 +5,6 @@ import android.app.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 public interface NavigateAdapter {
-    void navigateTo (AppCompatActivity activity);
-    void initFramework(AppCompatActivity appCompatActivity);
+    void navigateTo (AppCompatActivity activity, String route);
+    void initFramework(Activity appCompatActivity);
 }

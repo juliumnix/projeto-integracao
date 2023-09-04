@@ -21,8 +21,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _getNativeParams() async {
     try {
-      String result = await module.getMessageFromNative();
       String navigate = await module.getNavigate();
+      print(navigate);
 
       if (navigate == "/") {
         _navigateTo(CameraPixDetector());
@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen>
         ));
       }
     } on PlatformException catch (e) {
-      print(e.message);
+      // print(e.message);
     }
   }
 
@@ -49,10 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getNativeParams();
-    });
+    _getNativeParams();
   }
 
   @override
@@ -62,7 +59,14 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text("AAAAAAAAAAAAAAA")]),
+            children: [
+              Text("AAAAAAAAAAAAAAA"),
+              ElevatedButton(
+                  onPressed: () {
+                    _getNativeParams();
+                  },
+                  child: Text("cuideapito"))
+            ]),
       ),
     );
   }

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 
 import com.example.projetov2.BuildConfig;
+import com.example.projetov2.CustomFlutterActivity;
 import com.example.projetov2.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
@@ -33,6 +34,8 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
     private final Informations model;
     private ReactRootView mReactRootView;
 
+    private ReactInstanceManager mReactInstanceManager;
+
     public ReactIntegrationViewModel() {
         this.model = Informations.getInstance();
     }
@@ -41,8 +44,12 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         model.setMessage_From_Native(message);
     }
 
+    public ReactInstanceManager getmReactInstanceManager() {
+        return mReactInstanceManager;
+    }
+
     @Override
-    public void navigateTo(AppCompatActivity activity) {
+    public void navigateTo(AppCompatActivity activity, String route) {
         Intent intent = new Intent(activity, MyReactActivity.class);
         intent.putExtra("message_from_native", model.getMessage_From_Native());
         activity.startActivity(intent);
@@ -53,16 +60,14 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Intent intent = FlutterActivity
-                        .withCachedEngine(getChannel_Id())
-                        .build(activity.getApplicationContext());
+                Intent intent = new Intent(activity, CustomFlutterActivity.class);
                 activity.startActivity(intent);
             }
         });
     }
 
     @Override
-    public void initFramework(AppCompatActivity appCompatActivity) {
+    public void initFramework(Activity appCompatActivity) {
         SoLoader.init(appCompatActivity, false);
         mReactRootView = new ReactRootView(appCompatActivity);
         List<ReactPackage> packages = new PackageList(appCompatActivity.getApplication()).getPackages();
@@ -71,7 +76,7 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         packages.add(new ReactPackageNative());
         // Remember to include them in `settings.gradle` and `app/build.gradle` too.
         SoLoader.init(appCompatActivity, false);
-        ReactInstanceManager mReactInstanceManager = ReactInstanceManager.builder()
+        mReactInstanceManager = ReactInstanceManager.builder()
                 .setApplication(appCompatActivity.getApplication())
                 .setCurrentActivity(appCompatActivity)
                 .setBundleAssetName("index.android.bundle")

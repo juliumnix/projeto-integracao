@@ -1,43 +1,34 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View} from 'react-native';
-import { NativeProps } from '../..';
-import { NativeModules } from 'react-native';
-const {NativeFunctions} = NativeModules;
+import React from "react";
+import { NativeProps } from "../..";
+import { NativeModules } from "react-native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import ConfirmationScreen from "./ConfirmationScreen";
+import InvestmentFunds from "./InvestmentFunds";
+import SplashScreen from "./SplashScreen";
 
-export const App = (props : NativeProps)  => {
-  const navigateToFlutter = async () => {
-    try {
-      const result = await NativeFunctions.navigateToFlutter();
-      console.log(result)
-    } catch (error) {
-      console.log(error)
-    }
-  }  
-    return (
-      <View style={styles.container}>
-        <Text style={styles.hello}>Welcome to React Native</Text>
-        <Text style={styles.hello}>
-          This is the message coming from the native
-        </Text>
-        <Text style={styles.nativeText}>{props.message_from_native}</Text>
-        <Button title='Teste' onPress={() => {navigateToFlutter()}}/>
-      </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    hello: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 10,
-    },
-    nativeText: {
-      fontSize: 20,
-      textAlign: 'center',
-      fontWeight: 'bold'
-    }
-  });
+export type RootStackParamList = {
+  SplashScreen: { infoFromNative: string };
+  ConfirmationScreen: { pixCode: string };
+  InvestmentFunds: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+export const App = (props: NativeProps) => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SplashScreen"
+          component={SplashScreen}
+          initialParams={{ infoFromNative: props.message_from_native }}
+        />
+        <Stack.Screen
+          name="ConfirmationScreen"
+          component={ConfirmationScreen}
+        />
+        <Stack.Screen name="InvestmentFunds" component={InvestmentFunds} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
