@@ -1,7 +1,7 @@
 import React from "react";
 import { NativeProps } from "../..";
 import { NativeModules } from "react-native";
-import { NavigationContainer, RouteProp } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ConfirmationScreen from "./ConfirmationScreen";
 import InvestmentFunds from "./InvestmentFunds";
@@ -22,10 +22,22 @@ export const App = (props: NativeProps) => {
           name="SplashScreen"
           component={SplashScreen}
           initialParams={{ infoFromNative: props.message_from_native }}
+          options={{
+            headerStyle: {
+              backgroundColor: "blue", // Define a cor de fundo da AppBar
+            },
+            headerTintColor: "white", // Define a cor do texto da AppBar
+          }}
         />
         <Stack.Screen
           name="ConfirmationScreen"
           component={ConfirmationScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: "#0099CC", // Define a cor de fundo da AppBar
+            },
+            headerTintColor: "white", // Define a cor do texto da AppBar
+          }}
         />
         <Stack.Screen name="InvestmentFunds" component={InvestmentFunds} />
       </Stack.Navigator>

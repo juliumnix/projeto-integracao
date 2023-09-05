@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         "/": (context) => SplashScreen(),
-        "/qrCode": (context) => CameraPixDetector(),
-        "/teste": (context) => Teste(pixCode: "1234")
+        "/qrCode": (context) => const CameraPixDetector(),
+        "/teste": (context) => const Teste(pixCode: "1234")
       },
     );
   }

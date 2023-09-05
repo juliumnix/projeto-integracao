@@ -1,25 +1,20 @@
-package com.example.projetov2;
+package com.example.projetov2.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.projetov2.model.Informations;
+import com.example.projetov2.R;
 import com.example.projetov2.viewmodel.FlutterIntegrationViewModel;
 import com.example.projetov2.viewmodel.ReactIntegrationViewModel;
-
-import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends AppCompatActivity {
     private FlutterIntegrationViewModel viewModelFlutter;
     private ReactIntegrationViewModel viewModelReact;
-    private EditText txtMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +25,10 @@ public class MainActivity extends AppCompatActivity {
         viewModelReact = new ViewModelProvider(this).get(ReactIntegrationViewModel.class);
         Button btnReact = findViewById(R.id.btn_react);
         Button btnFlutter = findViewById(R.id.btn_flutter);
-        txtMessage = findViewById(R.id.txt_texto);
-
-//        viewModelFlutter.initFramework(this);
 
         btnFlutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewModelFlutter.saveMessage(txtMessage.getText().toString());
                 viewModelFlutter.navigateTo(MainActivity.this, "/");
 
             }
@@ -45,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         btnReact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModelReact.saveMessage(txtMessage.getText().toString());
                 viewModelReact.navigateTo(MainActivity.this, "");
             }
         });

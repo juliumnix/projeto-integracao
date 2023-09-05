@@ -1,8 +1,5 @@
 package com.example.projetov2.viewmodel;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-import static com.example.projetov2.model.Informations.getChannel_Id;
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
 import android.app.Activity;
@@ -13,8 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 
 import com.example.projetov2.BuildConfig;
-import com.example.projetov2.CustomFlutterActivity;
-import com.example.projetov2.MyReactActivity;
+import com.example.projetov2.view.CustomFlutterActivity;
+import com.example.projetov2.view.MainActivity;
+import com.example.projetov2.view.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
 import com.example.projetov2.packages.ReactPackageNative;
@@ -28,8 +26,6 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.List;
 
-import io.flutter.embedding.android.FlutterActivity;
-
 public class ReactIntegrationViewModel extends ViewModel implements NavigateAdapter {
     private final Informations model;
     private ReactRootView mReactRootView;
@@ -40,10 +36,6 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         this.model = Informations.getInstance();
     }
 
-    public void saveMessage(String message) {
-        model.setMessage_From_Native(message);
-    }
-
     public ReactInstanceManager getmReactInstanceManager() {
         return mReactInstanceManager;
     }
@@ -51,7 +43,7 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
     @Override
     public void navigateTo(AppCompatActivity activity, String route) {
         Intent intent = new Intent(activity, MyReactActivity.class);
-        intent.putExtra("message_from_native", model.getMessage_From_Native());
+        intent.putExtra("message_from_native", route);
         activity.startActivity(intent);
     }
 
@@ -64,6 +56,12 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
                 activity.startActivity(intent);
             }
         });
+    }
+
+    public void renderNativeScreen(AppCompatActivity activity){
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
     }
 
     @Override

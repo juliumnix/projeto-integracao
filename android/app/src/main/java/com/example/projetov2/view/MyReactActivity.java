@@ -1,4 +1,4 @@
-package com.example.projetov2;
+package com.example.projetov2.view;
 
 import android.os.Bundle;
 import android.view.KeyEvent;

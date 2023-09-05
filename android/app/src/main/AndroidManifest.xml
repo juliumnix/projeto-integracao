@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
 
         android:allowBackup="true"
@@ -16,7 +18,7 @@
         android:usesCleartextTraffic="true" tools:targetApi="28">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +28,14 @@
         </activity>
 
         <activity
-            android:name=".MyReactActivity"
+            android:name=".view.MyReactActivity"
             android:label="@string/app_name"
             android:usesCleartextTraffic="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
 
-        <activity android:name=".CustomFlutterActivity"
+        <activity android:name=".view.CustomFlutterActivity"
             android:usesCleartextTraffic="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>

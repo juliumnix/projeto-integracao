@@ -4,10 +4,8 @@ import 'package:flutter_module/camera_pix_detector.dart';
 import 'package:flutter_module/mymodule.dart';
 import 'package:flutter_module/teste.dart';
 
-import 'my_home_page.dart';
-
 class SplashScreen extends StatefulWidget {
-  SplashScreen({
+  const SplashScreen({
     super.key,
   });
 
@@ -22,10 +20,9 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _getNativeParams() async {
     try {
       String navigate = await module.getNavigate();
-      print(navigate);
 
       if (navigate == "/") {
-        _navigateTo(CameraPixDetector());
+        _navigateTo(const CameraPixDetector());
       }
 
       if (navigate == "/teste") {
@@ -60,12 +57,12 @@ class _SplashScreenState extends State<SplashScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("AAAAAAAAAAAAAAA"),
+              const Text("AAAAAAAAAAAAAAA"),
               ElevatedButton(
                   onPressed: () {
                     _getNativeParams();
                   },
-                  child: Text("cuideapito"))
+                  child: const Text("cuideapito"))
             ]),
       ),
     );

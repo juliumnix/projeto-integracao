@@ -1,4 +1,4 @@
-package com.example.projetov2;
+package com.example.projetov2.view;
 
 import static com.example.projetov2.model.Informations.getChannelFlutter;
 

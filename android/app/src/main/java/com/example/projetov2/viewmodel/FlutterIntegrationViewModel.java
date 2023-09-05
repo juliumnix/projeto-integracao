@@ -1,45 +1,31 @@
 package com.example.projetov2.viewmodel;
 
 import static com.example.projetov2.model.Informations.getChannelFlutter;
-import static com.example.projetov2.model.Informations.getChannel_Id;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.projetov2.CustomFlutterActivity;
-import com.example.projetov2.MainActivity;
-import com.example.projetov2.MyReactActivity;
+import com.example.projetov2.view.CustomFlutterActivity;
+import com.example.projetov2.view.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
 
 import java.util.Map;
 
-import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.embedding.engine.FlutterEngineCache;
-import io.flutter.embedding.engine.FlutterEngineGroup;
-import io.flutter.embedding.engine.FlutterEngineGroupCache;
 import io.flutter.embedding.engine.dart.DartExecutor;
-import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class FlutterIntegrationViewModel extends ViewModel implements NavigateAdapter {
     private final Informations model;
     private Activity flutterActivityInstance;
-
     private FlutterEngine customEngine;
     public FlutterIntegrationViewModel() {
         this.model = Informations.getInstance();
-    }
-
-    public void saveMessage(String message) {
-        model.setMessage_From_Native(message);
     }
 
     @Override
