@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_module/mymodule.dart';
+import 'package:flutter_module/controllers/camera_pix_detector_controller.dart';
 
 class CameraPixDetector extends StatefulWidget {
   const CameraPixDetector({super.key});
@@ -13,25 +12,7 @@ class CameraPixDetector extends StatefulWidget {
 class _CameraPixDetectorState extends State<CameraPixDetector>
     with WidgetsBindingObserver {
   final TextEditingController _textController = TextEditingController();
-  final bool verifyIsFlutter = false;
-
-  readQRCode() async {
-    String code = await FlutterBarcodeScanner.scanBarcode(
-      "#FFFFFF",
-      "Cancelar",
-      false,
-      ScanMode.QR,
-    );
-    if (code != "-1") {
-      navigateToPix(code);
-    }
-  }
-
-  navigateToPix(String pixCode) {
-    MyModule module = MyModule();
-    _textController.clear();
-    module.navigateToReact(pixCode);
-  }
+  final CameraPixDetectorController _controller = CameraPixDetectorController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +31,8 @@ class _CameraPixDetectorState extends State<CameraPixDetector>
           systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Color(0xff0099cc),
           ),
-          title: Text(verifyIsFlutter ? "Tela Flutter" : "Pagamento PIX"),
+          title: Text(
+              _controller.verifyIsFlutter ? "Tela Flutter" : "Pagamento PIX"),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -69,7 +51,7 @@ class _CameraPixDetectorState extends State<CameraPixDetector>
                 ),
                 Center(
                   child: ElevatedButton.icon(
-                    onPressed: readQRCode,
+                    onPressed: _controller.readQRCode(),
                     icon: const Icon(Icons.qr_code),
                     label: const Text('Ler QR Code'),
                     style: ButtonStyle(
@@ -100,7 +82,7 @@ class _CameraPixDetectorState extends State<CameraPixDetector>
                               const Color(0xff0099cc))),
                       onPressed: () {
                         if (_textController.text != "") {
-                          navigateToPix(_textController.text);
+                          _controller.navigateToPix(_textController.text);
                         }
                       },
                       icon: const Icon(Icons.arrow_forward),

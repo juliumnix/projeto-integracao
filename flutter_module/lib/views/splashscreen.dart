@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_module/camera_pix_detector.dart';
+import 'package:flutter_module/views/camera_pix_detector.dart';
 import 'package:flutter_module/mymodule.dart';
-import 'package:flutter_module/teste.dart';
+import 'package:flutter_module/views/teste.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({

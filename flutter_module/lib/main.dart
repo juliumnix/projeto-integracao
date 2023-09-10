@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_module/camera_pix_detector.dart';
-import 'package:flutter_module/help_page.dart';
+import 'package:flutter_module/views/camera_pix_detector.dart';
+import 'package:flutter_module/views/help_page.dart';
 import 'package:flutter_module/mymodule.dart';
-import 'package:flutter_module/splashscreen.dart';
-import 'package:flutter_module/teste.dart';
+import 'package:flutter_module/views/splashscreen.dart';
+import 'package:flutter_module/views/teste.dart';
 
 void main() {
   runApp(const MyApp());

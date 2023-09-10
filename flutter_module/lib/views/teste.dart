@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_module/help_page.dart';
+import 'package:flutter_module/views/help_page.dart';
 import 'package:flutter_module/mymodule.dart';
 
 class Teste extends StatefulWidget {
