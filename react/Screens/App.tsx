@@ -23,10 +23,7 @@ export const App = (props: NativeProps) => {
           component={SplashScreen}
           initialParams={{ infoFromNative: props.message_from_native }}
           options={{
-            headerStyle: {
-              backgroundColor: "blue", // Define a cor de fundo da AppBar
-            },
-            headerTintColor: "white", // Define a cor do texto da AppBar
+            headerShown: false, // Define a cor do texto da AppBar
           }}
         />
         <Stack.Screen
@@ -39,7 +36,16 @@ export const App = (props: NativeProps) => {
             headerTintColor: "white", // Define a cor do texto da AppBar
           }}
         />
-        <Stack.Screen name="InvestmentFunds" component={InvestmentFunds} />
+        <Stack.Screen
+          name="InvestmentFunds"
+          component={InvestmentFunds}
+          options={{
+            headerStyle: {
+              backgroundColor: "#0099CC", // Define a cor de fundo da AppBar
+            },
+            headerTintColor: "white", // Define a cor do texto da AppBar
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

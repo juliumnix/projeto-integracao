@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_module/camera_pix_detector.dart';
+import 'package:flutter_module/help_page.dart';
 import 'package:flutter_module/mymodule.dart';
 import 'package:flutter_module/splashscreen.dart';
 import 'package:flutter_module/teste.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "/": (context) => SplashScreen(),
         "/qrCode": (context) => const CameraPixDetector(),
-        "/teste": (context) => const Teste(pixCode: "1234")
+        "/teste": (context) => const Teste(fundDetail: "1234"),
+        "/help": (context) => const HelpPage()
       },
     );
   }

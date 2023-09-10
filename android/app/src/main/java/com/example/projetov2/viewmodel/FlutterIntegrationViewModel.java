@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 
 import com.example.projetov2.view.CustomFlutterActivity;
+import com.example.projetov2.view.MainActivity;
 import com.example.projetov2.view.MyReactActivity;
 import com.example.projetov2.adapter.NavigateAdapter;
 import com.example.projetov2.model.Informations;
@@ -88,6 +89,17 @@ public class FlutterIntegrationViewModel extends ViewModel implements NavigateAd
                         assert data != null;
                         String key = (String) data.get("key");
                         navigateToReact(key);
+                    } else {
+                        result.notImplemented();
+                    }
+                });
+
+        new MethodChannel(engine.getDartExecutor().getBinaryMessenger(), "investmentFunds")
+                .setMethodCallHandler((call, result) -> {
+                    if ("navigateToNative".equals(call.method)) {
+                        Intent intent = new Intent(flutterActivityInstance, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        flutterActivityInstance.startActivity(intent);
                     } else {
                         result.notImplemented();
                     }

@@ -7,6 +7,8 @@ class MyModule {
 
   static const plataformNavigateToReact = MethodChannel("navigate/react");
 
+  static const plataformNavigateToNative = MethodChannel("investmentFunds");
+
   Future<String> getNavigate() async {
     try {
       final String message =
@@ -30,6 +32,12 @@ class MyModule {
     try {
       await plataformNavigateToReact
           .invokeMethod("getNavigateToReact", {"key": code});
+    } catch (e) {}
+  }
+
+  Future<void> navigateToNative() async {
+    try {
+      await plataformNavigateToNative.invokeMethod("navigateToNative");
     } catch (e) {}
   }
 }

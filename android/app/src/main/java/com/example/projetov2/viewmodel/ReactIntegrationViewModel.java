@@ -47,6 +47,10 @@ public class ReactIntegrationViewModel extends ViewModel implements NavigateAdap
         activity.startActivity(intent);
     }
 
+    public void setModelMessage(String data){
+        model.setMessage_From_Native(data);
+    }
+
     public void renderFlutterInsideReact(String route, AppCompatActivity activity) {
         model.setRoute(route);
         runOnUiThread(new Runnable() {

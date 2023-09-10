@@ -26,8 +26,9 @@ class _SplashScreenState extends State<SplashScreen>
       }
 
       if (navigate == "/teste") {
-        _navigateTo(const Teste(
-          pixCode: "teste",
+        String dataFund = await module.getMessageFromNative();
+        _navigateTo(Teste(
+          fundDetail: dataFund,
         ));
       }
     } on PlatformException catch (e) {
@@ -52,18 +53,20 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+      body: Container(
+        color: const Color(0xFF41B3D3),
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("AAAAAAAAAAAAAAA"),
-              ElevatedButton(
-                  onPressed: () {
-                    _getNativeParams();
-                  },
-                  child: const Text("cuideapito"))
-            ]),
+            children: <Widget>[
+              Image.asset(
+                'assets/images/logo.png', // Caminho para a imagem local
+                width: 200, // Largura da imagem (ajuste conforme necessário)
+                height: 200, // Altura da imagem (ajuste conforme necessário)
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
